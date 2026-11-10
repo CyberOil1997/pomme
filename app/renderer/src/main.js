@@ -13,6 +13,7 @@ const RAD = Math.PI / 180;
 
 const $ = (s) => document.querySelector(s);
 const body = document.body;
+if (window.pomme?.platform === 'win32') body.classList.add('win');
 
 /* ---------------- settings ---------------- */
 const DEFAULTS = {

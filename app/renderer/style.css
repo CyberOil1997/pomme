@@ -80,6 +80,8 @@ svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width:
 }
 .wordmark { font-size: 14px; font-weight: 600; letter-spacing: 0.02em; color: var(--ink-2); }
 .titlebar .icon-btn { position: absolute; right: 12px; top: 10px; }
+/* Windows draws its window buttons top right, so settings moves left */
+body.win .titlebar .icon-btn { right: auto; left: 12px; }
 
 /* ---------- segmented control ---------- */
 .segmented {

@@ -2,14 +2,15 @@
   "name": "pomme",
   "productName": "Pomme",
   "version": "1.0.0",
-  "description": "A crystal apple pomodoro timer. Every focus session, the apple gets a bite.",
+  "description": "A pomodoro timer. An apple gets eaten while you focus.",
   "main": "main.js",
   "author": "CyberOil1997",
   "license": "MIT",
   "scripts": {
     "start": "npm run build && electron .",
     "dist": "npm run build && electron-builder --mac --universal",
-    "build": "esbuild renderer/src/main.js --bundle --format=iife --minify --outfile=renderer/app.bundle.js"
+    "build": "esbuild renderer/src/main.js --bundle --format=iife --minify --outfile=renderer/app.bundle.js",
+    "dist:win": "npm run build && electron-builder --win --x64"
   },
   "build": {
     "appId": "net.cyberoil.pomme",
@@ -50,6 +51,28 @@
           "path": "/Applications"
         }
       ]
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "build/icon.ico",
+      "signExecutable": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": false,
+      "createDesktopShortcut": true,
+      "shortcutName": "Pomme",
+      "artifactName": "Pomme-Setup-${version}.exe",
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico"
     }
   },
   "devDependencies": {

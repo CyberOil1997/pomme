@@ -1,8 +1,15 @@
 const { app, BrowserWindow, Tray, nativeImage, ipcMain, Notification, Menu } = require('electron');
 const path = require('path');
 
+const isMac = process.platform === 'darwin';
 let win;
 let tray;
+
+// Mac: traffic lights inset into the page. Windows: hide the title bar and
+// let Windows draw its own min/max/close buttons over the top-right corner.
+const chrome = isMac
+  ? { titleBarStyle: 'hiddenInset', trafficLightPosition: { x: 16, y: 16 } }
+  : { titleBarStyle: 'hidden', titleBarOverlay: { color: '#00000000', symbolColor: '#6b4a42', height: 44 } };
 
 function createWindow() {
   win = new BrowserWindow({
@@ -11,8 +18,8 @@ function createWindow() {
     minWidth: 340,
     minHeight: 580,
     resizable: true,
-    titleBarStyle: 'hiddenInset',
-    trafficLightPosition: { x: 16, y: 16 },
+    ...chrome,
+    icon: path.join(__dirname, 'assets', 'icon.png'),
     backgroundColor: '#f7efeb',
     show: false,
     webPreferences: {
@@ -40,8 +47,14 @@ function createWindow() {
 }
 
 function createTray() {
-  tray = new Tray(nativeImage.createEmpty());
-  tray.setTitle('🍎');
+  if (isMac) {
+    tray = new Tray(nativeImage.createEmpty());
+    tray.setTitle('🍎');
+  } else {
+    // Windows trays need a real icon; the time goes in the hover tooltip
+    const img = nativeImage.createFromPath(path.join(__dirname, 'assets', 'icon.png')).resize({ width: 32, height: 32 });
+    tray = new Tray(img);
+  }
   tray.setToolTip('Pomme');
   tray.on('click', () => {
     if (!win) createWindow();
@@ -55,7 +68,11 @@ function createTray() {
   ]));
 }
 
-ipcMain.on('tray-title', (_e, title) => tray && tray.setTitle(title));
+ipcMain.on('tray-title', (_e, title) => {
+  if (!tray) return;
+  if (isMac) tray.setTitle(title);
+  else tray.setToolTip(title.replace('🍎', 'Pomme').trim() || 'Pomme');
+});
 ipcMain.on('notify', (_e, { title, body }) => {
   if (Notification.isSupported()) new Notification({ title, body, silent: true }).show();
 });
@@ -66,5 +83,5 @@ app.whenReady().then(() => {
   app.on('activate', () => { if (!win) createWindow(); else win.show(); });
 });
 
-// Keep running in the menu bar when the window closes, like most timers.
+// Keep running in the menu bar (or tray on Windows) when the window closes.
 app.on('window-all-closed', () => {});
