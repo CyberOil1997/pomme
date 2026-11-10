@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: blob:; connect-src 'self' blob: data:; media-src 'self'; style-src 'self' 'unsafe-inline'">
+  <title>Pomme</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-apple="red" data-mode="focus">
+  <canvas id="apple"></canvas>
+
+  <header class="titlebar">
+    <div class="wordmark">pomme</div>
+    <button class="icon-btn ghost" id="settingsBtn" aria-label="Settings">
+      <svg viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>
+    </button>
+  </header>
+
+  <nav class="segmented" id="modes" role="tablist">
+    <div class="seg-indicator" id="segIndicator"></div>
+    <button role="tab" data-mode="focus" aria-selected="true">Focus</button>
+    <button role="tab" data-mode="short">Short break</button>
+    <button role="tab" data-mode="long">Long break</button>
+  </nav>
+
+  <main class="stage">
+    <div class="apple-wrap" id="appleWrap" aria-label="Crystal apple. Drag to spin.">
+      <div class="loading" id="loading">polishing…</div>
+    </div>
+  </main>
+
+  <section class="clock">
+    <div class="time" id="time">25:00</div>
+    <div class="status">
+      <div class="bites" id="bites" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+      <p class="caption" id="caption">ready when you are</p>
+    </div>
+  </section>
+
+  <section class="dock">
+    <button class="icon-btn" id="resetBtn" aria-label="Reset (R)">
+      <svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.4-5.7"/><path d="M4 4v4h4"/></svg>
+    </button>
+    <button class="primary" id="startBtn"><span id="startLabel">Start</span></button>
+    <button class="icon-btn" id="skipBtn" aria-label="Skip (S)">
+      <svg viewBox="0 0 24 24"><path d="M6 6l8 6-8 6z"/><path d="M18 6v12"/></svg>
+    </button>
+  </section>
+
+  <footer class="footer">
+    <div class="swatches" role="radiogroup" aria-label="Apple">
+      <button class="swatch red" data-apple="red" aria-label="Red apple"></button>
+      <button class="swatch green" data-apple="green" aria-label="Green apple"></button>
+    </div>
+    <div class="round" id="round">round 1 of 4</div>
+    <button class="icon-btn ghost small" id="soundBtn" aria-label="Sound">
+      <svg class="on" viewBox="0 0 24 24"><path d="M5 10v4h3l4 3V7L8 10z"/><path d="M16 9a4 4 0 0 1 0 6"/></svg>
+      <svg class="off" viewBox="0 0 24 24"><path d="M5 10v4h3l4 3V7L8 10z"/><path d="M16 10l4 4M20 10l-4 4"/></svg>
+    </button>
+  </footer>
+
+  <div class="scrim" id="scrim"></div>
+  <aside class="sheet" id="sheet" aria-hidden="true">
+    <div class="grabber"></div>
+    <h2>Settings</h2>
+    <div class="about">
+      <p><b>Focus</b> is for work. Over <span data-about="focus"></span> minutes the apple gets eaten bite by bite, down to the core.</p>
+      <p><b>Short break</b> is time off, not work. Get up, grab some water.</p>
+      <p><b>Long break</b> is a longer rest. You get one after every <span data-about="rounds"></span> focus rounds.</p>
+    </div>
+    <div class="row"><label>Focus</label><div class="stepper" data-key="focus" data-min="1" data-max="90" data-unit="min"></div></div>
+    <div class="row"><label>Short break</label><div class="stepper" data-key="short" data-min="1" data-max="30" data-unit="min"></div></div>
+    <div class="row"><label>Long break</label><div class="stepper" data-key="long" data-min="1" data-max="60" data-unit="min"></div></div>
+    <div class="row"><label>Rounds until long break</label><div class="stepper" data-key="rounds" data-min="2" data-max="8" data-unit=""></div></div>
+    <div class="row"><label>Start breaks on their own</label><button class="switch" data-key="autoBreak" role="switch"></button></div>
+    <div class="row"><label>Start focus after a break</label><button class="switch" data-key="autoFocus" role="switch"></button></div>
+    <div class="row"><label>Volume</label><input type="range" id="volume" min="0" max="1" step="0.05"></div>
+    <button class="done" id="doneBtn">Done</button>
+  </aside>
+
+  <script src="app.bundle.js"></script>
+</body>
+</html>

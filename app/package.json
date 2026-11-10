@@ -1,0 +1,61 @@
+{
+  "name": "pomme",
+  "productName": "Pomme",
+  "version": "1.0.0",
+  "description": "A crystal apple pomodoro timer. Every focus session, the apple gets a bite.",
+  "main": "main.js",
+  "author": "CyberOil1997",
+  "license": "MIT",
+  "scripts": {
+    "start": "npm run build && electron .",
+    "dist": "npm run build && electron-builder --mac --universal",
+    "build": "esbuild renderer/src/main.js --bundle --format=iife --minify --outfile=renderer/app.bundle.js"
+  },
+  "build": {
+    "appId": "net.cyberoil.pomme",
+    "productName": "Pomme",
+    "files": [
+      "main.js",
+      "preload.js",
+      "renderer/**",
+      "!renderer/src/**",
+      "assets/**"
+    ],
+    "mac": {
+      "category": "public.app-category.productivity",
+      "icon": "build/icon.icns",
+      "target": [
+        {
+          "target": "dmg"
+        }
+      ],
+      "identity": null
+    },
+    "dmg": {
+      "title": "Pomme",
+      "iconSize": 112,
+      "window": {
+        "width": 600,
+        "height": 400
+      },
+      "contents": [
+        {
+          "x": 170,
+          "y": 200
+        },
+        {
+          "x": 430,
+          "y": 200,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    }
+  },
+  "devDependencies": {
+    "electron": "^45.2.3",
+    "electron-builder": "^26.18.0",
+    "esbuild": "^0.25.10",
+    "three": "^0.181.0"
+  }
+}

@@ -1,0 +1,14 @@
+node_modules/
+app/dist/
+renders/
+renders_*.log
+icon/
+*.blend
+*.blend1
+.DS_Store
+*.log
+export/
+backdrop/
+preview/
+renderers/
+app/renderer/app.bundle.js
